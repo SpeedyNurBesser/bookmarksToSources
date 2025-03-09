@@ -22,7 +22,7 @@
           </div>
         </header>
         <main class="mdl-layout__content">
-          <div class="page-content">
+          <div class="page-content" id="page">
             <h4>Change Template</h4>
 
             <table>
@@ -30,12 +30,12 @@
                 <tr>
                 <td>
                   <div class="mdl-textfield mdl-js-textfield" >
-                    <textarea class="mdl-textfield__input" type="text" rows="5" cols="100"></textarea>
+                    <textarea id="template-input" class="mdl-textfield__input" type="text" rows="5" cols="100"></textarea>
                     <label class="mdl-textfield__label" for="sample5">Text lines...</label>
                   </div>
                 </td>
                 <td>
-                  <div>Preview.</div>
+                  <div id="preview-box">Preview.</div>
                 </td>
               </tbody>
           </table>
@@ -50,11 +50,16 @@
               Reset
             </button>
 
+            <br><br><br>
+
+            
+
           </div>
         </main>
       </div>
 
       <script src="templater.js"></script>
+      <script src="templateStorage.js"></script>
       <script src="templateScript.js"></script>
 </body>
 </html>

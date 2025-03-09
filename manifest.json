@@ -5,7 +5,8 @@
     "description": "Generate a sources document from your bookmarks!",
     "permissions": [
         "bookmarks",
-        "tabs"
+        "tabs",
+        "storage"
     ],
     "background": {
         "scripts": ["background.js"],
