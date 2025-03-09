@@ -13,7 +13,6 @@ browser.storage.local.get(['template'])
     console.error(error);
   });
 
-// Initiallly get template
 
 function setTemplate(templateString) {
     browser.storage.local.set({ template: templateString })
