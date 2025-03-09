@@ -5,3 +5,4 @@ const exampleUrl = 'example.com'
 const exampleTitle = 'Example written by Ole370'
 const exampleIndex = 1
 
+let template =

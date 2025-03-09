@@ -24,3 +24,14 @@ function setTemplate(templateString) {
             console.error(error);
         });
 }
+
+function getTemplate() {
+  browser.storage.local.get(['template'])
+  .then((result) => {
+    return result.template
+  })
+  .catch((error) => {
+    console.error(error);
+    return -1
+  });
+}
