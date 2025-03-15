@@ -4,6 +4,8 @@ const resetButton = document.getElementById('reset-button')
 const templateInput = document.getElementById('template-input')
 const previewBox = document.getElementById('preview-box')
 
+const alertBoxPlace = document.getElementById('alerts')
+
 const exampleBookmark = {
     url: 'https://example.com',
     title: 'Example written by Ole370'
@@ -16,7 +18,7 @@ function addAlertBox(message, strongMessage = "Info! ") {
   alertBox = document.createElement("div")
   alertBox.setAttribute("class", "alert")
   alertBox.innerHTML = `<span class="close-button" >&times;</span><strong>${strongMessage}</strong> ${message}`
-  page.append(alertBox)
+  alertBoxPlace.append(alertBox)
 
   closeButtons = document.getElementsByClassName('close-button')
   for (let i = 0; i < closeButtons.length; i++) {
