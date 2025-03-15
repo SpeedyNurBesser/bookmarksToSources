@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "BookmarksToSources",
     "version": "1.0.0",
-    "description": "Generate a sources document from your bookmarks!",
+    "description": "Generate a research sources document from your bookmarks!",
     "permissions": [
         "bookmarks",
         "tabs",

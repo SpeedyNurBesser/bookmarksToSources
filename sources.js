@@ -1,5 +1,7 @@
 let templateString
 
+let bookmarksAsStrings = []
+
 browser.storage.local.get(['template'])
 .then((result) => {
     templateString = result.template
@@ -10,8 +12,18 @@ browser.storage.local.get(['template'])
 
 const outputDiv = document.getElementById('output')
 
+const htmlButton = document.getElementById('exportHtmlButton')
+const txtButton = document.getElementById('exportTxtButton')
+const docxButton = document.getElementById('exportDocxButton')
+
+const exportButtons = [htmlButton, txtButton, docxButton]
+
 const generateButton = document.getElementById('generateButton')
 generateButton.addEventListener("click", () => {
+    exportButtons.forEach(button => {
+        button.style.display = 'inline'
+    })
+
     outputDiv.innerHTML = ""
 
     selectedValues = getTreeselectValues()
@@ -23,8 +35,12 @@ generateButton.addEventListener("click", () => {
         bookmarkStrings.push(string)
     }
 
+    bookmarksAsStrings = []
+
     bookmarkStrings.forEach(bookmarkString => {
         p = `<p>${bookmarkString}</p>`
+
+        bookmarksAsStrings.push(bookmarkString)
 
         outputDiv.innerHTML += p
     });
@@ -66,6 +82,82 @@ function findValueInTree(value, tree) {
     return undefined
 }
 
+function downloadAsDefaultFile(filename, text) {
+    let donwloadElement = document.createElement('a');
+    donwloadElement.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    donwloadElement.setAttribute('download', filename);
+  
+    donwloadElement.style.display = 'none';
+    document.body.appendChild(donwloadElement);
+  
+    donwloadElement.click();
+  
+    document.body.removeChild(donwloadElement);
+  }
+
+htmlButton.addEventListener("click", () => {
+    htmlBookmarkString = ""
+
+    bookmarksAsStrings.forEach(bookmarkString => {
+        htmlBookmarkString += bookmarkString + "\n"
+    })
+
+    downloadAsDefaultFile('export.html', htmlBookmarkString)
+})
+
+txtButton.addEventListener("click", () => {
+    txtBookmarkString = ""
+    
+    bookmarksAsStrings.forEach(bookmarkString => {
+        // cleans up any unwanted html elements by giving the string to a div and only returning its textContent / innerText, which will automatically be cleaned up
+        let div = document.createElement("div")
+        div.innerHTML = bookmarkString
+        let textOutput = div.textContent || div.innerText || "";
+
+        txtBookmarkString += textOutput + "\n"
+    })
+
+    downloadAsDefaultFile('export.txt', txtBookmarkString)
+})
+
+docxButton.addEventListener("click", () => {
+    let childrenText = []
+
+    bookmarksAsStrings.forEach(bookmarkString => {
+        // cleans up any unwanted html elements by giving the string to a div and only returning its textContent / innerText, which will automatically be cleaned up
+        let div = document.createElement("div")
+        div.innerHTML = bookmarkString
+        let textOutput = div.textContent || div.innerText || "";
+        let data = { html: div.outerHTML }
+        console.log(data)
+
+
+        childrenText.push(new docx.TextRun(textOutput))
+    })
+
+    let paragraphs = []
+
+    childrenText.forEach(text =>  {
+        paragraphs.push(new docx.Paragraph({
+            children: [
+              text
+            ],
+          }))
+    })
+
+    const doc = new docx.Document({
+       sections: [{
+         properties: {},
+         children: paragraphs,
+       }]
+     });
+
+      docx.Packer.toBlob(doc).then(blob => {
+        console.log(blob);
+        saveAs(blob, "example.docx");
+        console.log("Document created successfully");
+      });
+})
 
 // get Info from Template (how to save? => String)
 // get ListX of all selected values in Treeselect
