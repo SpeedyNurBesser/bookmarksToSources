@@ -1,10 +1,14 @@
-let templateString
+let templateString;
 
 let bookmarksAsStrings = []
 
 browser.storage.local.get(['template'])
 .then((result) => {
-    templateString = result.template
+    if (result.template) {
+        templateString = result.template;
+    } else {
+        templateString = resetTemplate;
+    }
 })
 .catch((error) => {
   console.error(error);
@@ -154,8 +158,7 @@ docxButton.addEventListener("click", () => {
 
       docx.Packer.toBlob(doc).then(blob => {
         console.log(blob);
-        saveAs(blob, "example.docx");
-        console.log("Document created successfully");
+        saveAs(blob, "export.docx");
       });
 })
 
